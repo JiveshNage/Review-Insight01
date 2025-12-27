@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -47,6 +48,7 @@ const formSchema = z.object({
 
 export default function ReviewSourceCard() {
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
   const { setReviews } = useReviewContext();
   const { toast } = useToast();
 
@@ -72,13 +74,14 @@ export default function ReviewSourceCard() {
         title: 'Error',
         description: error,
       });
+      setIsLoading(false);
     } else {
        toast({
-        title: 'Success',
-        description: 'Simulated fetching reviews. You can now extract topics.',
+        title: 'Success!',
+        description: 'Simulated fetching reviews. Redirecting to extraction...',
       });
+      router.push('/topic-extraction');
     }
-    setIsLoading(false);
   }
 
   return (
