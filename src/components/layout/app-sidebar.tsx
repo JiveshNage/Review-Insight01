@@ -24,17 +24,17 @@ const navItems = [
     label: 'Dashboard',
   },
   {
-    href: '/#topic-extraction',
+    href: '/topic-extraction',
     icon: Tags,
     label: 'Topic Extraction',
   },
   {
-    href: '/#topic-deduplication',
+    href: '/topic-deduplication',
     icon: Combine,
     label: 'Topic Deduplication',
   },
   {
-    href: '/#trend-report',
+    href: '/trend-report',
     icon: FileText,
     label: 'Trend Report',
   },
@@ -57,8 +57,6 @@ export default function AppSidebar() {
             <SidebarMenuItem key={item.label}>
               <SidebarMenuButton
                 asChild
-                // A simple way to check for active link.
-                // For a real app, a more robust solution is needed.
                 isActive={pathname === item.href}
                 className="aria-[current=page]:bg-accent aria-[current=page]:text-accent-foreground"
               >
