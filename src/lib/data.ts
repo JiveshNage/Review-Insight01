@@ -1,3 +1,6 @@
+import type { ExtractTopicsFromReviewsOutput } from "@/ai/flows/extract-topics-from-reviews";
+import type { DeduplicateSemanticallySimilarTopicsOutput } from "@/ai/flows/deduplicate-semantically-similar-topics";
+
 export const sampleReviews = [
   "This app is amazing! The new feature is a game-changer.",
   "I'm having trouble with the login process. It keeps crashing.",
@@ -23,6 +26,36 @@ export const initialTopicsForDeduplication = [
   "app freezes",
   "performance degradation",
 ];
+
+export const extractedTopics: ExtractTopicsFromReviewsOutput = {
+  topics: [
+    { topic: "Positive feedback on new feature", reasoning: "User mentioned 'The new feature is a game-changer'." },
+    { topic: "Login issues", reasoning: "User stated 'I'm having trouble with the login process'." },
+    { topic: "App crashing", reasoning: "Review mentions 'It keeps crashing' and 'The app crashes every time I try'." },
+    { topic: "Feature request: Dark mode", reasoning: "User asked 'Could you add a dark mode?' and 'Dark theme please!'." },
+    { topic: "Confusing user interface", reasoning: "Feedback includes 'The user interface is a bit confusing to navigate'." },
+    { topic: "Positive customer support experience", reasoning: "User said 'Customer support was very helpful'." },
+    { topic: "Feature request: Data export", reasoning: "User wished for a way to 'export my data to a CSV file'." },
+    { topic: "App freezes after update", reasoning: "A user reported 'The app constantly freezes after the latest update'." },
+    { topic: "Slow performance", reasoning: "User complained that 'Performance has been sluggish lately'." },
+  ]
+};
+
+export const deduplicatedTopics: DeduplicateSemanticallySimilarTopicsOutput = {
+  canonicalTopics: {
+    "login issues": "Login & Crash Issues",
+    "app crashing": "Login & Crash Issues",
+    "dark mode request": "Feature Request: Dark Mode",
+    "UI confusion": "UI/UX Feedback",
+    "data export feature": "Feature Request: Data Export",
+    "slow performance": "Performance & Speed",
+    "login failure": "Login & Crash Issues",
+    "request for dark theme": "Feature Request: Dark Mode",
+    "app freezes": "Performance & Speed",
+    "performance degradation": "Performance & Speed",
+  }
+};
+
 
 // Generates an array of dates for the last N days
 const generateDateHeaders = (days: number) => {
@@ -59,7 +92,7 @@ export const trendData = [
     total: 17,
   },
   {
-    topic: "Data Export Request",
+    topic: "Feature Request: Data Export",
     counts: [0, 1, 0, 2, 1, 0, 1],
     total: 5,
   },

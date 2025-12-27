@@ -57,7 +57,9 @@ export default function TopicExtractionCard() {
   });
 
   useEffect(() => {
-    form.setValue('reviews', reviewsFromContext.join('\n\n'));
+    if (reviewsFromContext.length > 0) {
+      form.setValue('reviews', reviewsFromContext.join('\n\n'));
+    }
   }, [reviewsFromContext, form]);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -98,7 +100,7 @@ export default function TopicExtractionCard() {
       <CardHeader>
         <CardTitle>Topic Extraction</CardTitle>
         <CardDescription>
-          Use AI to extract key topics from the fetched user reviews.
+          Use AI to extract key topics from the fetched user reviews. This is stage 3 of the workflow.
         </CardDescription>
       </CardHeader>
       <Form {...form}>
