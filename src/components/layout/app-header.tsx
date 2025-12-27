@@ -2,8 +2,6 @@ import {
   Bot,
   CircleUser,
   LayoutDashboard,
-  LogOut,
-  Settings,
 } from 'lucide-react';
 import Image from 'next/image';
 
@@ -61,15 +59,6 @@ export default function AppHeader() {
             <DropdownMenuItem>
               <LayoutDashboard className="mr-2" />
               Dashboard
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Settings className="mr-2" />
-              Settings
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <LogOut className="mr-2" />
-              Logout
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
