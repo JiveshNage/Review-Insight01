@@ -14,6 +14,7 @@ import {
 
 import { cn } from "@/lib/utils"
 import { Label } from "@/components/ui/label"
+import { useStableId } from "@/hooks/use-stable-id";
 
 const Form = FormProvider
 
@@ -76,7 +77,7 @@ const FormItem = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => {
-  const id = React.useId()
+  const id = useStableId()
 
   return (
     <FormItemContext.Provider value={{ id }}>
@@ -176,3 +177,5 @@ export {
   FormMessage,
   FormField,
 }
+
+    
