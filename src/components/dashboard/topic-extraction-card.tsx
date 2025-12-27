@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -33,7 +33,7 @@ import {
 import { Skeleton } from '@/components/ui/skeleton';
 import { useToast } from '@/hooks/use-toast';
 import { handleExtractTopics } from '@/lib/actions';
-import { sampleReviews } from '@/lib/data';
+import { useReviewContext } from '@/context/review-provider';
 import type { ExtractTopicsFromReviewsOutput } from '@/ai/flows/extract-topics-from-reviews';
 
 const formSchema = z.object({
@@ -47,18 +47,33 @@ export default function TopicExtractionCard() {
   const [result, setResult] =
     useState<ExtractTopicsFromReviewsOutput | null>(null);
   const { toast } = useToast();
+  const { reviews: reviewsFromContext } = useReviewContext();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      reviews: sampleReviews.join('\n\n'),
+      reviews: '',
     },
   });
+
+  useEffect(() => {
+    form.setValue('reviews', reviewsFromContext.join('\n\n'));
+  }, [reviewsFromContext, form]);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
     setResult(null);
-    const reviews = values.reviews.split('\n').filter((r) => r.trim() !== '');
+    const reviews = values.reviews.split('\n\n').filter((r) => r.trim() !== '');
+
+    if (reviews.length === 0) {
+        toast({
+            variant: 'destructive',
+            title: 'No Reviews',
+            description: 'Please fetch reviews from the dashboard first or paste them here.',
+        });
+        setIsLoading(false);
+        return;
+    }
 
     const { data, error } = await handleExtractTopics(reviews);
 
@@ -70,6 +85,10 @@ export default function TopicExtractionCard() {
       });
     } else {
       setResult(data);
+       toast({
+        title: 'Success',
+        description: 'Topics have been extracted from the reviews.',
+      });
     }
     setIsLoading(false);
   }
@@ -79,7 +98,7 @@ export default function TopicExtractionCard() {
       <CardHeader>
         <CardTitle>Topic Extraction</CardTitle>
         <CardDescription>
-          Use AI to extract key topics from raw user reviews.
+          Use AI to extract key topics from the fetched user reviews.
         </CardDescription>
       </CardHeader>
       <Form {...form}>
@@ -93,7 +112,7 @@ export default function TopicExtractionCard() {
                   <FormLabel>User Reviews</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="Paste user reviews here, one per line."
+                      placeholder="Paste user reviews here, one per line, or fetch them from the dashboard."
                       className="min-h-[200px] resize-y bg-background text-foreground"
                       {...field}
                     />

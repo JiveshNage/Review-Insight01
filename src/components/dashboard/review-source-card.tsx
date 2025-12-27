@@ -34,7 +34,9 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { useToast } from '@/hooks/use-toast';
+import { useReviewContext } from '@/context/review-provider';
 import { handleProcessReviews } from '@/lib/actions';
+import { sampleReviews } from '@/lib/data';
 
 const formSchema = z.object({
   appStoreUrl: z.string().url({ message: 'Please enter a valid URL.' }),
@@ -45,19 +47,24 @@ const formSchema = z.object({
 
 export default function ReviewSourceCard() {
   const [isLoading, setIsLoading] = useState(false);
+  const { setReviews } = useReviewContext();
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      appStoreUrl: '',
+      appStoreUrl: 'https://play.google.com/store/apps/details?id=com.google.android.apps.tasks',
       date: new Date(),
     },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
+    // Simulate fetching reviews. In a real app, this would be an API call.
     const { message, error } = await handleProcessReviews(values.appStoreUrl, values.date);
+    
+    // For now, we'll use sample data to populate the context.
+    setReviews(sampleReviews);
 
     if (error) {
       toast({
@@ -68,14 +75,14 @@ export default function ReviewSourceCard() {
     } else {
        toast({
         title: 'Success',
-        description: message,
+        description: 'Simulated fetching reviews. You can now extract topics.',
       });
     }
     setIsLoading(false);
   }
 
   return (
-    <Card className="col-span-1">
+    <Card className="col-span-1 lg:col-span-1">
       <CardHeader>
         <CardTitle>Analyze App Reviews</CardTitle>
         <CardDescription>
@@ -93,8 +100,8 @@ export default function ReviewSourceCard() {
                   <FormLabel>App Store URL</FormLabel>
                   <FormControl>
                     <div className="relative">
-                      <Link className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-                      <Input placeholder="https://play.google.com/store/apps/details?id=..." {...field} className="pl-10" />
+                      <Link className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+                      <Input placeholder="https://play.google.com/store/apps/details?id=..." {...field} className="pl-10 text-foreground" />
                     </div>
                   </FormControl>
                   <FormMessage />
@@ -126,7 +133,7 @@ export default function ReviewSourceCard() {
                         </Button>
                       </FormControl>
                     </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
+                    <PopoverContent className="w-auto p-0 bg-card" align="start">
                       <Calendar
                         mode="single"
                         selected={field.value}
@@ -145,8 +152,8 @@ export default function ReviewSourceCard() {
           </CardContent>
           <CardFooter>
             <Button type="submit" disabled={isLoading} className="w-full md:w-auto">
-              <Send className="mr-2" />
-              {isLoading ? 'Processing...' : 'Generate Report'}
+              <Send className="mr-2 size-4" />
+              {isLoading ? 'Processing...' : 'Fetch Reviews'}
             </Button>
           </CardFooter>
         </form>
