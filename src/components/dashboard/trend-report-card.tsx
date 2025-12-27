@@ -18,6 +18,7 @@ import { Button } from '@/components/ui/button';
 import { Download } from 'lucide-react';
 import { trendData, trendReportHeaders } from '@/lib/data';
 import { Badge } from '@/components/ui/badge';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 export default function TrendReportCard() {
   return (
@@ -29,7 +30,7 @@ export default function TrendReportCard() {
         </CardDescription>
       </CardHeader>
       <CardContent className="font-data">
-        <div className="overflow-x-auto rounded-md border border-border">
+        <ScrollArea className="w-full whitespace-nowrap rounded-md border">
           <Table>
             <TableHeader>
               <TableRow>
@@ -65,7 +66,7 @@ export default function TrendReportCard() {
               ))}
             </TableBody>
           </Table>
-        </div>
+        </ScrollArea>
       </CardContent>
        <CardFooter>
         <Button variant="outline">

@@ -11,7 +11,7 @@ export default function Home() {
       <SidebarInset className="bg-background">
         <AppHeader />
         <main className="p-4 lg:p-6">
-          <div className="grid grid-cols-1 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <ReviewSourceCard />
             <OverviewCards />
           </div>
