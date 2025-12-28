@@ -1,10 +1,6 @@
 'use client';
 
-<<<<<<< HEAD
 import { useState } from 'react';
-=======
-import { useState, useEffect } from 'react';
->>>>>>> origin/main
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -37,10 +33,6 @@ import {
 import { Skeleton } from '@/components/ui/skeleton';
 import { useToast } from '@/hooks/use-toast';
 import { handleExtractTopics } from '@/lib/actions';
-<<<<<<< HEAD
-=======
-import { useReviewContext } from '@/context/review-provider';
->>>>>>> origin/main
 import type { ExtractTopicsFromReviewsOutput } from '@/ai/flows/extract-topics-from-reviews';
 
 const formSchema = z.object({
@@ -54,10 +46,6 @@ export default function TopicExtractionCard() {
   const [result, setResult] =
     useState<ExtractTopicsFromReviewsOutput | null>(null);
   const { toast } = useToast();
-<<<<<<< HEAD
-=======
-  const { reviews: reviewsFromContext } = useReviewContext();
->>>>>>> origin/main
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -66,15 +54,6 @@ export default function TopicExtractionCard() {
     },
   });
 
-<<<<<<< HEAD
-=======
-  useEffect(() => {
-    if (reviewsFromContext.length > 0) {
-      form.setValue('reviews', reviewsFromContext.join('\n\n'));
-    }
-  }, [reviewsFromContext, form]);
-
->>>>>>> origin/main
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
     setResult(null);
@@ -84,11 +63,7 @@ export default function TopicExtractionCard() {
         toast({
             variant: 'destructive',
             title: 'No Reviews',
-<<<<<<< HEAD
             description: 'Please paste reviews here.',
-=======
-            description: 'Please fetch reviews from the dashboard first or paste them here.',
->>>>>>> origin/main
         });
         setIsLoading(false);
         return;
@@ -117,11 +92,7 @@ export default function TopicExtractionCard() {
       <CardHeader>
         <CardTitle>Topic Extraction</CardTitle>
         <CardDescription>
-<<<<<<< HEAD
           Use AI to extract key topics from user reviews.
-=======
-          Use AI to extract key topics from the fetched user reviews. This is stage 3 of the workflow.
->>>>>>> origin/main
         </CardDescription>
       </CardHeader>
       <Form {...form}>
@@ -135,11 +106,7 @@ export default function TopicExtractionCard() {
                   <FormLabel>User Reviews</FormLabel>
                   <FormControl>
                     <Textarea
-<<<<<<< HEAD
                       placeholder="Paste user reviews here, one per line."
-=======
-                      placeholder="Paste user reviews here, one per line, or fetch them from the dashboard."
->>>>>>> origin/main
                       className="min-h-[200px] resize-y bg-background text-foreground"
                       {...field}
                     />
